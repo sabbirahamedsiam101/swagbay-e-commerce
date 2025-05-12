@@ -23,9 +23,7 @@
   --header-font: "Playfair Display", serif;
 }
 
-* {
-  padding: 0;
-  margin: 0;
+* {  margin: 0;
   box-sizing: border-box;
 }
 
@@ -137,8 +135,9 @@ nav {
 .header__container {
   min-height: 650px;
   background-color: var(--primary-color-light);
-  border-bottom-left-radius: 1rem;
-  border-bottom-right-radius: 1rem;
+  /* border-bottom-left-radius: 1rem;
+  border-bottom-right-radius: 1rem; */
+  border-radius: 1rem;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
@@ -195,11 +194,12 @@ nav {
 }
 
 .categories__card img {
-  max-width: 100px;
+  max-width: 300px;
   margin: auto;
   margin-bottom: 1rem;
   border: 5px solid var(--white);
-  border-radius: 100%;
+  /* border-radius: 100%; */
+  border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
@@ -352,7 +352,7 @@ nav {
   place-content: center;
   text-align: center;
   background-color: var(--white);
-  border-radius: 100%;
+  border-radius: 10px;
   box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
 }
 
