@@ -2,7 +2,7 @@ import React from 'react'
 import Banner from './Banner'
 import Categories from './Categories'
 import HeroSection from './HeroSection'
-import TrendingProdcuts from '../Shop/TrendingProdcuts'
+import TrendingProducts from '../Shop/TrendingProducts'
 import DealsSection from './DealsSection'
 import PromoBanner from './PromoBanner'
 import Blogs from '../Blogs/Blogs'
@@ -13,7 +13,7 @@ function Home() {
        <Banner />
        <Categories />
        <HeroSection />
-       <TrendingProdcuts />
+       <TrendingProducts />
        <DealsSection />
        <PromoBanner />
        <Blogs />

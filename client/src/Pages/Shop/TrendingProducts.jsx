@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import ProductCards from "./ProductCards";
 import products from "../../data/products.json";
-function TrendingProdcuts() {
+function TrendingProducts() {
   const [visibleProducts, setVisibleProducts] = useState(8);
 
   const loadMoreProducts = () => {
@@ -32,4 +32,4 @@ function TrendingProdcuts() {
   );
 }
 
-export default TrendingProdcuts;
+export default TrendingProducts;
