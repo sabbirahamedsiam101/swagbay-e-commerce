@@ -65,6 +65,10 @@ function Footer() {
           </div>
         </div>
       </footer>
+
+      <div className="footer__bar">
+        Copyright 2025 by Lebaba. All rights reserved.
+      </div>
     </>
   );
 }

@@ -9,7 +9,7 @@ function Categories() {
     { name: "Accessories", path: "accessories", image: category1 },
     { name: "Dress Collection", path: "dress", image: category2 },
     { name: "Jewellery", path: "jewellery", image: category3 },
-    { name: "Cosmetics", path: "accessories", image: category4 },
+    { name: "Cosmetics", path: "cosmetics", image: category4 },
   ];
   return (
     <>
