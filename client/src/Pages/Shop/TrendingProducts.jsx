@@ -1,12 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import ProductCards from "./ProductCards";
-import products from "../../data/products.json";
-function TrendingProducts() {
-  const [visibleProducts, setVisibleProducts] = useState(8);
 
-  const loadMoreProducts = () => {
-    setVisibleProducts((prevCount) => prevCount + 4);
+function TrendingProducts() {
+  const [visibleCount, setVisibleCount] = useState(8);
+
+  const { data: products = [], isLoading, isError, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: async () => {
+      const data = await import("../../data/products.json");
+      return data.default;
+    },
+    staleTime: 1000 * 60 * 5, // optional: cache for 5 mins
+  });
+
+  const visibleProducts = useMemo(() => {
+    return products.slice(0, visibleCount);
+  }, [products, visibleCount]);
+
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + 4);
   };
+
   return (
     <section className="section__container product__container">
       <h2 className="section__header">Trending Products</h2>
@@ -15,19 +30,32 @@ function TrendingProducts() {
         Collection of Trending Women's Fashion Products.
       </p>
 
-      {/* product card */}
-      <div>
-        <ProductCards products={products.slice(0, visibleProducts)} />
-      </div>
+      {/* Loading */}
+      {isLoading && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 animate-pulse">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="h-40 bg-gray-300 rounded" />
+          ))}
+        </div>
+      )}
 
-      {/* load more products btn */}
-      <div className="product__btn pt-5">
-        {visibleProducts < products.length && (
-          <button className="btn" onClick={loadMoreProducts}>
-            Load More
-          </button>
-        )}
-      </div>
+      {/* Error */}
+      {isError && <div className="text-red-500">Error: {error.message}</div>}
+
+      {/* Product Cards */}
+      {!isLoading && !isError && (
+        <>
+          <ProductCards products={visibleProducts} isLoading={isLoading} />
+
+          {visibleCount < products.length && (
+            <div className="product__btn pt-5">
+              <button className="btn" onClick={loadMore}>
+                Load More
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </section>
   );
 }

@@ -6,7 +6,7 @@ import ProductCards from "../Shop/ProductCards";
 const SkeletonLoader = () => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
     {[...Array(4)].map((_, index) => (
-      <div key={index} className="animate-pulse bg-gray-300 h-40 rounded-lg" />
+      <div key={index} className="animate-pulse bg-gray-300 h-[300px] rounded-lg" />
     ))}
   </div>
 );
