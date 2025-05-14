@@ -2,10 +2,10 @@ import React from 'react'
 import Banner from './Banner'
 import Categories from './Categories'
 import HeroSection from './HeroSection'
-import TrendingProducts from '../Shop/TrendingProducts'
+import TrendingProducts from '../shop/TrendingProducts'
 import DealsSection from './DealsSection'
 import PromoBanner from './PromoBanner'
-import Blogs from '../Blogs/Blogs'
+import Blogs from '../blogs/Blogs'
 
 function Home() {
   return (

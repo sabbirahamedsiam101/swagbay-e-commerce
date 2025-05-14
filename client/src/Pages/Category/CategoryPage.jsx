@@ -1,7 +1,7 @@
 import React from "react";
 import { useParams } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import ProductCards from "../Shop/ProductCards";
+import ProductCards from "../shop/ProductCards";
 
 const SkeletonLoader = () => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
