@@ -7,7 +7,11 @@ function ProductCards({ products, isLoading }) {
   const skeletonArray = new Array(8).fill(null); // 8 placeholders
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    // <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+    <div
+      className="grid gap-6"
+      style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
+    >
       {isLoading
         ? skeletonArray.map((_, i) => (
             <div
@@ -22,12 +26,12 @@ function ProductCards({ products, isLoading }) {
         : products.map((product, index) => (
             <div key={index} className="product__card">
               <div className="relative group overflow-hidden rounded">
-                <Link to={`/products/${product.id}`}>
+                <Link to={`/shop/${product.id}`}>
                   <img
                     src={product.image}
                     loading="lazy"
                     alt={product.name}
-                    className="max-h-96 md:h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+                    className="aspect-[4/3] md:h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
                   />
                 </Link>
 

@@ -20,6 +20,7 @@ function Search() {
         product.description.toLowerCase().includes(debouncedQuery)
     );
   }, [debouncedQuery]);
+  
   // const handleSearch = () => {
   //   const query = searchQuery.toLowerCase();
   //   const filtered = productsData.filter(
