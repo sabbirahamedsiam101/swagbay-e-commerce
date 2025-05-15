@@ -1,11 +1,16 @@
-import React from "react";
 import { Link } from "react-router";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import RatingStars from "../../Components/RatingStars";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux/features/cart/cartSlice";
 
 function ProductCards({ products, isLoading }) {
   const skeletonArray = new Array(8).fill(null); // 8 placeholders
+  const dispatch = useDispatch();
 
+  const handleAddToCart = (product) => {
+    dispatch(addToCart(product));
+  };
   return (
     // <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
     <div
@@ -35,7 +40,13 @@ function ProductCards({ products, isLoading }) {
                   />
                 </Link>
 
-                <button className="absolute top-2 right-2 bg-(--color-primary) hover:bg-(--color-primary-dark) text-white p-2 rounded-lg z-10">
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleAddToCart(product);
+                  }}
+                  className="absolute top-2 right-2 bg-(--color-primary) hover:bg-(--color-primary-dark) text-white p-2 rounded-lg z-10"
+                >
                   <AiOutlineShoppingCart />
                 </button>
               </div>

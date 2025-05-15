@@ -98,9 +98,15 @@ function ProductDetailsPage() {
             </div>
           </div>
 
-          <button className="bg-primary px-6 py-2 text-sm text-white rounded w-fit">Add to Cart</button>
+          <button className="bg-primary px-6 py-2 text-sm text-white rounded w-fit">
+            Add to Cart
+          </button>
         </div>
       </div>
+      {/* review section */}
+      <section className="section__container bg-gray-300 text-center mt-12">
+        Review will here
+      </section>
     </section>
   );
 }

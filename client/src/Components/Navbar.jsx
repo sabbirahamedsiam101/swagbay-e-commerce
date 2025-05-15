@@ -3,8 +3,11 @@ import { Link } from "react-router";
 import { LuSearch } from "react-icons/lu";
 import { GrShop } from "react-icons/gr";
 import { RiUserLine } from "react-icons/ri";
+import { useSelector } from "react-redux";
 
 function Navbar() {
+  const products = useSelector((state) => state.cart.products);
+  console.log("products", products);
   return (
     <header className="fixed-nav-bar w-nav">
       <nav className="max-w-screen-2x1 mx-auto px-4 flex justify-between items-center">
@@ -41,7 +44,7 @@ function Navbar() {
             <button className="text-xl text-(--color-text-dark) hover:text-(--color-primary)">
               <GrShop />
               <sup className="absolute -top-2 -right-2 text-xs text-white bg-(--color-primary) rounded-full px-1.5 size-4 flex items-center justify-center">
-                0
+               {products.length}
               </sup>
             </button>
           </span>
