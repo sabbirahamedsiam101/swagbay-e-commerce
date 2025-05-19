@@ -10,10 +10,10 @@ function Navbar() {
   const products = useSelector((state) => state.cart.products);
   const [isCartOpen, setIsCartOpen] = React.useState(false);
   const hanldeCartToggle = () => {
-    console.log(isCartOpen);
+    // console.log(isCartOpen);
     setIsCartOpen(!isCartOpen);
   };
-  console.log("products", products);
+  // console.log("products", products);
   return (
     <header className="fixed-nav-bar w-nav">
       <nav className="max-w-screen-2x1 mx-auto px-4 flex justify-between items-center">

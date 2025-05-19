@@ -1,7 +1,10 @@
 import React from "react";
 import OrderSummary from "./OrderSummary";
 import { useDispatch } from "react-redux";
-import { updateQuentity } from "../../redux/features/cart/cartSlice";
+import {
+  removeItem,
+  updateQuentity,
+} from "../../redux/features/cart/cartSlice";
 
 function CartModal({ isOpen, onClose, products }) {
   console.log(isOpen);
@@ -10,9 +13,15 @@ function CartModal({ isOpen, onClose, products }) {
     const payload = { type, id };
     dispatch(updateQuentity(payload));
   };
+  const handleRemoveitem = (id) => {
+    // console.log("remove");
+    dispatch(removeItem(id));
+  };
+
+
   return (
     <div
-      className={`fixed top-0 z-50 right-0 w-[500px] p-8 h-screen bg-gray-100 shadow-2xl duration-300 ${
+      className={`fixed top-0 z-50 right-0 w-[500px] p-8 h-screen overflow-y-auto bg-gray-100 shadow-2xl duration-300 ${
         isOpen ? "translate-x-0" : "translate-x-full"
       }`}
     >
@@ -63,17 +72,26 @@ function CartModal({ isOpen, onClose, products }) {
                   {/* Right Section */}
                   <div className="flex flex-col items-end mt-2 md:mt-0">
                     <div className="flex items-center">
-                      <button onClick={() => handleQuantity("decrement", product._id)} className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 hover:bg-primary text-white">
+                      <button
+                        onClick={() => handleQuantity("decrement", product._id)}
+                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 hover:bg-primary text-white"
+                      >
                         -
                       </button>
                       <span className="px-2 text-center mx-1">
                         {product.quantity}
                       </span>
-                      <button onClick={() => handleQuantity("increment", product._id)} className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 hover:bg-primary text-white">
+                      <button
+                        onClick={() => handleQuantity("increment", product._id)}
+                        className="size-6 flex items-center justify-center px-1.5 rounded-full bg-gray-200 hover:bg-primary text-white"
+                      >
                         +
                       </button>
                     </div>
-                    <button className="mt-2">
+                    <button
+                      onClick={() => handleRemoveitem(product._id)}
+                      className="mt-2"
+                    >
                       <span className="text-red-600">Remove</span>
                     </button>
                   </div>

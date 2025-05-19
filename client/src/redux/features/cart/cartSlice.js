@@ -32,7 +32,7 @@ export const cartSlice = createSlice({
     },
     updateQuentity: (state, action) => {
       const products = state.products.map((product) => {
-        if (product._id === action.payload._id) {
+        if (product._id === action.payload.id) {
           if (action.payload.type === "increment") {
             product.quantity += 1;
           } else if (action.payload.type === "decrement") {
@@ -44,6 +44,23 @@ export const cartSlice = createSlice({
         return product;
       });
       // state.products = products;
+      state.selectedItems = setSelectedItems(state);
+      state.totalPrice = setTotalPrice(state);
+      state.tax = setTax(state);
+      state.grandTotal = setGrandTotal(state);
+    },
+    removeItem: (state, action) => {
+      console.log(action.payload);
+      state.products = state.products.filter(
+        (product) => product._id !== action.payload
+      );
+      state.selectedItems = setSelectedItems(state);
+      state.totalPrice = setTotalPrice(state);
+      state.tax = setTax(state);
+      state.grandTotal = setGrandTotal(state);
+    },
+    clearCart: (state) => {
+      state.products = [];
       state.selectedItems = setSelectedItems(state);
       state.totalPrice = setTotalPrice(state);
       state.tax = setTax(state);
@@ -76,5 +93,6 @@ export const setGrandTotal = (state) => {
   return total + total * state.taxRate;
 };
 
-export const { addToCart, updateQuentity } = cartSlice.actions;
+export const { addToCart, updateQuentity, removeItem, clearCart } =
+  cartSlice.actions;
 export default cartSlice.reducer;
