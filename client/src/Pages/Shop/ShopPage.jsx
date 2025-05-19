@@ -15,6 +15,7 @@ const filters = {
 };
 
 function ShopPage() {
+  
   const [filterState, setFilterState] = useState({
     category: "all",
     colors: "all",
@@ -79,7 +80,7 @@ function ShopPage() {
               Showing: {filterState.category}, {filterState.colors},{" "}
               {filterState.priceRange || "Any Price"}
             </p>
-            <ProductCards products={filteredProducts} />
+            <ProductCards products={filteredProducts} hasSidebar={true} />
           </div>
         </div>
       </section>

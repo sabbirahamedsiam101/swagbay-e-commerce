@@ -7,7 +7,7 @@ function ShopFiltering({
   clearFilters,
 }) {
   return (
-    <div className="space-y-6 w-full md:w-64">
+    <div className="space-y-6 w-full md:w-[220px]">
       <h3 className="text-xl font-semibold">Filters</h3>
 
       {/* Category Filter */}

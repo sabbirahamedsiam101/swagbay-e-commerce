@@ -5,7 +5,7 @@ function RatingStars() {
   const stars = [];
   for (let i = 1; i <= 5; i++) {
     stars.push(
-      <span className="text-lg">
+      <span className="text-lg" key={i}>
         <IoStar />
       </span>
     );

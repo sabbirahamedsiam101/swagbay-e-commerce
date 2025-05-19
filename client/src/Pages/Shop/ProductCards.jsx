@@ -4,19 +4,24 @@ import RatingStars from "../../Components/RatingStars";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../redux/features/cart/cartSlice";
 
-function ProductCards({ products, isLoading }) {
+function ProductCards({ products, isLoading, hasSidebar = false }) {
   const skeletonArray = new Array(8).fill(null); // 8 placeholders
   const dispatch = useDispatch();
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
+  const gridColsClass = hasSidebar
+    ? "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4";
+
   return (
     // <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-    <div
-      className="grid gap-6"
-      style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
-    >
+    //  <div
+    //   className="grid gap-6"
+    //   style={{ gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))" }}
+    // ></div>
+    <div className={`grid gap-6 ${gridColsClass}`}>
       {isLoading
         ? skeletonArray.map((_, i) => (
             <div
@@ -31,12 +36,12 @@ function ProductCards({ products, isLoading }) {
         : products.map((product, index) => (
             <div key={index} className="product__card">
               <div className="relative group overflow-hidden rounded">
-                <Link to={`/shop/${product.id}`}>
+                <Link to={`/shop/${product._id}`}>
                   <img
                     src={product.image}
                     loading="lazy"
                     alt={product.name}
-                    className="aspect-[4/3] md:h-64 w-full object-cover transition-transform duration-300 group-hover:scale-105 group-hover:rotate-3"
+                    className="aspect-[4/3]  w-full object-cover transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                   />
                 </Link>
 

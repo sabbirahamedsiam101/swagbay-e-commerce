@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+import toast, { Toaster } from "react-hot-toast";
 const initialState = {
   products: [],
   selectedItems: 0,
@@ -15,13 +15,35 @@ export const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       const isExist = state.products.find(
-        (item) => item.id === action.payload.id
+        (item) => item._id === action.payload._id
       );
       if (!isExist) {
         state.products.push({ ...action.payload, quantity: 1 });
+        toast.success("Item added to cart");
+        // console.log("Item added to cart" , action.payload);
       } else {
-        console.log("Item already added to cart");
+        // console.log("Item already added to cart");
+        toast.error("Item already added to cart");
       }
+      state.selectedItems = setSelectedItems(state);
+      state.totalPrice = setTotalPrice(state);
+      state.tax = setTax(state);
+      state.grandTotal = setGrandTotal(state);
+    },
+    updateQuentity: (state, action) => {
+      const products = state.products.map((product) => {
+        if (product._id === action.payload._id) {
+          if (action.payload.type === "increment") {
+            product.quantity += 1;
+          } else if (action.payload.type === "decrement") {
+            if (product.quantity > 1) {
+              product.quantity -= 1;
+            }
+          }
+        }
+        return product;
+      });
+      // state.products = products;
       state.selectedItems = setSelectedItems(state);
       state.totalPrice = setTotalPrice(state);
       state.tax = setTax(state);
@@ -33,21 +55,26 @@ export const cartSlice = createSlice({
 // utilities
 
 export const setSelectedItems = (state) => {
-  state.products.reduce((total, product) => {
-    return total + product.quantity, 0;
-  });
+  return state.products.reduce((total, product) => {
+    return total + product.quantity;
+  }, 0);
 };
 
 export const setTotalPrice = (state) => {
-  state.products.reduce((total, product) => {
-    return total + product.price * product.quantity, 0;
-  });
+  return state.products.reduce((total, product) => {
+    return total + product.price * product.quantity;
+  }, 0);
 };
 
-export const setTax = (state) => setTotalPrice(state) * state.taxRate;
+export const setTax = (state) => {
+  const total = setTotalPrice(state);
+  return total * state.taxRate;
+};
+
 export const setGrandTotal = (state) => {
-  return setTotalPrice(state) + setTotalPrice(state) * state.taxRate;
+  const total = setTotalPrice(state);
+  return total + total * state.taxRate;
 };
 
-export const { addToCart } = cartSlice.actions;
+export const { addToCart, updateQuentity } = cartSlice.actions;
 export default cartSlice.reducer;

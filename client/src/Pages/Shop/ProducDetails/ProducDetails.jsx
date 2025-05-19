@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import RatingStars from "../../../Components/RatingStars";
 
 const defaultProduct = {
-  id: 2,
+  _id: 2,
   name: "Evening Gown",
   category: "dress",
   description: "Elegant evening gown for special occasions.",
