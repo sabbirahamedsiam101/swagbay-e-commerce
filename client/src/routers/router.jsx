@@ -8,6 +8,7 @@ import Search from "../Pages/search/Search";
 import ShopPage from "../Pages/shop/ShopPage";
 import ProducDetails from "../Pages/shop/ProducDetails/ProducDetails";
 import Login from "../Components/Login";
+import Register from "../Components/Register";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
   {
     path: "/login",
     Component: Login,
+  },
+  {
+    path: "/register",
+    Component: Register,
   },
 ]);
 
