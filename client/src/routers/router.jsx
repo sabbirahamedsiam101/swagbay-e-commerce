@@ -7,6 +7,7 @@ import CategoryPage from "../Pages/category/CategoryPage";
 import Search from "../Pages/search/Search";
 import ShopPage from "../Pages/shop/ShopPage";
 import ProducDetails from "../Pages/shop/ProducDetails/ProducDetails";
+import Login from "../Components/Login";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       { path: "/shop", Component: ShopPage },
       { path: "/shop/:id", Component: ProducDetails },
     ],
+  },
+  {
+    path: "/login",
+    Component: Login,
   },
 ]);
 
