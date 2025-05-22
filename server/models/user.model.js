@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -22,7 +23,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Password is required"],
       minlength: 6,
-      select: false, // 🔒 hides password in queries unless explicitly selected
+      select: false,
     },
     role: {
       type: String,
@@ -31,21 +32,18 @@ const userSchema = new mongoose.Schema(
     },
     profileImage: {
       type: String,
-      default: "https://example.com/default-profile-image.png",
     },
     bio: {
       type: String,
-      default: "This is my bio.",
       maxlength: 160,
     },
     profession: {
       type: String,
-      default: "not specified",
       maxlength: 100,
     },
   },
   {
-    timestamps: true, // 👌 adds createdAt and updatedAt automatically
+    timestamps: true, // ✅ Adds createdAt and updatedAt
   }
 );
 
@@ -57,7 +55,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-// 🔐 Method to compare passwords during login
+// 🔐 Method to compare passwords
 userSchema.methods.comparePassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password);
 };
