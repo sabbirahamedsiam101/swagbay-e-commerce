@@ -77,6 +77,10 @@ export const loginUser = async (req, res) => {
   }
 };
 
+export const logoutUser = (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logout successful" });
+};
 export const updateUser = (req, res) => {
   const { id } = req.params;
   res.send(`update user with id ${id}`);
@@ -84,5 +88,6 @@ export const updateUser = (req, res) => {
 
 export const deleteUser = (req, res) => {
   const { id } = req.params;
+  console.log(`delete user with id ${id}`);
   res.send(`delete user with id ${id}`);
 };
