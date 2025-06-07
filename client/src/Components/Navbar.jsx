@@ -1,19 +1,45 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router";
 import { LuSearch } from "react-icons/lu";
 import { GrShop } from "react-icons/gr";
 import { RiUserLine } from "react-icons/ri";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CartModal from "../Pages/shop/CartModal";
-
+import profileAvetar from "../assets/avatar.png";
 function Navbar() {
   const products = useSelector((state) => state.cart.products);
-  const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+
+  const handleDropdownToggle = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+  // console.log(user);
   const hanldeCartToggle = () => {
     // console.log(isCartOpen);
     setIsCartOpen(!isCartOpen);
   };
-  // console.log("products", products);
+
+  // admin dropdown menus
+  const adminDropDownMenus = [
+    { label: "Dashboard", path: "/dashboard/admin" },
+    { label: "Manage Items", path: "/dashboard/manage-products" },
+    { label: "All Orders", path: "/dashboard/manage-orders" },
+    { label: "Add New Post", path: "/dashboard/add-new-post" },
+  ];
+
+  // user dropdown menus
+  const userDropDownMenus = [
+    { label: "Dashboard", path: "/dashboard" },
+    { label: "Profile", path: "/dashboard/profile" },
+    { label: "Payments", path: "/dashboard/payments" },
+    { label: "Orders", path: "/dashboard/orders" },
+  ];
+
+  const dropdownMenus =
+    user?.role === "admin" ? [...adminDropDownMenus] : [...userDropDownMenus];
   return (
     <header className="fixed-nav-bar w-nav">
       <nav className="max-w-screen-2x1 mx-auto px-4 flex justify-between items-center">
@@ -58,22 +84,28 @@ function Navbar() {
             </button>
           </span>
           <span>
-            <Link to="/login">
-              <button className="text-xl text-(--color-text-dark) hover:text-(--color-primary)">
+            {user ? (
+              <img
+                src={profileAvetar}
+                alt=""
+                className="w-8 h-8 rounded-full"
+              />
+            ) : (
+              <Link to="/login">
                 <RiUserLine />
-              </button>
-            </Link>
+              </Link>
+            )}
           </span>
         </div>
       </nav>
-
-        {/* <div className={`fixed top-0 right-0 w-[400px] p-8 h-screen bg-gray-100 shadow-2xl z-10  duration-300 ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}>
-          <button onClick={hanldeCartToggle} className="absolute top-4 right-4 px-2.5  rounded-full bg-white text-xl shadow">x</button>
-          cart
-        </div> */}
-        {/* cart modal */}
-        <div><CartModal isOpen={isCartOpen} onClose={hanldeCartToggle} products={products} /></div>
-   
+      {/* cart modal */}
+      <div>
+        <CartModal
+          isOpen={isCartOpen}
+          onClose={hanldeCartToggle}
+          products={products}
+        />
+      </div>
     </header>
   );
 }

@@ -7,13 +7,14 @@ import {
   loginUser,
   logoutUser,
   updateUser,
+  updateUserRole,
 } from "../controllers/userController.js";
 
 const userRouter = Router();
 
-userRouter.get("/", getAllUsers);
+userRouter.get("/users", getAllUsers);
 
-userRouter.get("/:id", getUserById);
+userRouter.get("/users/:id", getUserById);
 
 userRouter.post("/register", createUser);
 
@@ -21,8 +22,11 @@ userRouter.post("/login", loginUser);
 
 userRouter.post("/logout", logoutUser);
 
-userRouter.put("/:id", updateUser);
+// update user role
+userRouter.put("/users/:id", updateUserRole);
+// update user details
+userRouter.patch("/users/:id", updateUser);
 
-userRouter.delete("/:id", deleteUser);
+userRouter.delete("/users/edit/:id", deleteUser);
 
 export default userRouter;

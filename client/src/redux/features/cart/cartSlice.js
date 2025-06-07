@@ -22,8 +22,9 @@ export const cartSlice = createSlice({
         toast.success("Item added to cart");
         // console.log("Item added to cart" , action.payload);
       } else {
-        // console.log("Item already added to cart");
-        toast.error("Item already added to cart");
+        // console.log("Item already added to cart"); 
+  
+        // toast.error("Item already added to cart");
       }
       state.selectedItems = setSelectedItems(state);
       state.totalPrice = setTotalPrice(state);

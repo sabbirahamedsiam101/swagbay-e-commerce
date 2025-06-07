@@ -7,7 +7,7 @@ import {
 } from "../../redux/features/cart/cartSlice";
 
 function CartModal({ isOpen, onClose, products }) {
-  console.log(isOpen);
+  // console.log(isOpen);
   const dispatch = useDispatch();
   const handleQuantity = (type, id) => {
     const payload = { type, id };

@@ -1,12 +1,76 @@
 import generateToken from "../middlewares/generateToken.js";
 import User from "../models/user.model.js";
-export const getAllUsers = (req, res) => {
-  res.send("get all users");
+
+export const getAllUsers = async (req, res) => {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 20;
+    const skip = (page - 1) * limit;
+
+    const users = await User.find({}, "_id email role")
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const totalUsers = await User.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      message: "Users fetched successfully",
+      data: users,
+      pagination: {
+        totalUsers,
+        currentPage: page,
+        totalPages: Math.ceil(totalUsers / limit),
+      },
+    });
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({
+      success: false,
+      message: "Error fetching users",
+      error: error.message,
+    });
+  }
 };
 
-export const getUserById = (req, res) => {
-  const { id } = req.params;
-  res.send(`get user with id ${id}`);
+export const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    // Validate ID format
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID format",
+      });
+    }
+
+    // Find user by ID
+    const user = await User.findById(id);
+
+    // If not found
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    // If found
+    res.status(200).json({
+      success: true,
+      message: "User fetched successfully",
+      data: user,
+    });
+  } catch (error) {
+    console.error("Error getting user by ID:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching user",
+      error: error.message,
+    });
+  }
 };
 
 export const createUser = async (req, res) => {
@@ -81,13 +145,83 @@ export const logoutUser = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logout successful" });
 };
-export const updateUser = (req, res) => {
+
+export const updateUser = async (req, res) => {
   const { id } = req.params;
+
+  const user = await User.deleteOne({ _id: id });
   res.send(`update user with id ${id}`);
 };
 
-export const deleteUser = (req, res) => {
+export const updateUserRole = async (req, res) => {
   const { id } = req.params;
-  console.log(`delete user with id ${id}`);
-  res.send(`delete user with id ${id}`);
+  const { role } = req.body;
+
+  if (!id || !role) {
+    return res.status(400).json({
+      success: false,
+      message: "User ID and role are required",
+    });
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      id,
+      { role },
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User role updated successfully",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error updating user role:", error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
+export const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User ID is required" });
+    }
+
+    const deletedUser = await User.findByIdAndDelete(id);
+
+    if (!deletedUser) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User deleted successfully",
+      deletedUser, // Optional: include deleted user data
+    });
+  } catch (error) {
+    console.error("Error deleting user:", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
 };

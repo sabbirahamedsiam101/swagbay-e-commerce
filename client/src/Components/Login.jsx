@@ -1,35 +1,51 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useDispatch } from "react-redux";
+import { useLoginMutation } from "../redux/features/auth/authApi";
+import { setUser } from "../redux/features/auth/authSlice";
+import toast from "react-hot-toast";
 
 function Login() {
   const [message, setMessage] = useState("");
-  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-
-  const handleSubmit = (e) => {
+  const dispatch = useDispatch();
+  const [login, { isLoading: loginLoading, error }] = useLoginMutation();
+  const navigate = useNavigate();
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
+    setMessage("");
     const formData = e.target;
     const email = formData.email.value;
     const password = formData.password.value;
-    const user = { email, password };
-    console.log(user);
-
-    // Simulate login
-    setTimeout(() => {
-      setLoading(false);
-      // setMessage("Invalid credentials");
-    }, 1500);
+    const userData = { email, password };
+    try {
+      const res = await login(userData).unwrap();
+      console.log("Login success:", res);
+      const { token, user } = res;
+      dispatch(setUser({ user }));
+      toast.success("Login successful!");
+      setMessage("Login successful!");
+      navigate("/");
+    } catch (err) {
+      console.error("Login failed:", err);
+      toast.error(err?.data?.message || "Invalid credentials");
+      setMessage(err?.data?.message || "Invalid credentials");
+    } 
   };
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
-        <h2 className="text-3xl font-bold text-center text-gray-800">Login to Your Account</h2>
+        <h2 className="text-3xl font-bold text-center text-gray-800">
+          Login to Your Account
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email Address
             </label>
             <input
@@ -43,7 +59,10 @@ function Login() {
           </div>
 
           <div className="relative">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <input
@@ -69,18 +88,23 @@ function Login() {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={loginLoading}
             className={`w-full py-3 font-semibold rounded-lg text-white transition-all duration-300 ${
-              loading ? "bg-indigo-300 cursor-not-allowed" : "bg-primary hover:bg-indigo-700"
+              loginLoading
+                ? "bg-indigo-300 cursor-not-allowed"
+                : "bg-primary hover:bg-indigo-700"
             }`}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loginLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
         <div className="text-sm text-center text-gray-600">
           Don’t have an account?{" "}
-          <Link to="/register" className="text-primary font-medium hover:underline">
+          <Link
+            to="/register"
+            className="text-primary font-medium hover:underline"
+          >
             Register here
           </Link>
         </div>
