@@ -1,25 +1,22 @@
 import { Router } from "express";
 import {
   createProduct,
+  deleteProduct,
   getAllProducts,
   getProductById,
+  getRelatedProducts,
+  updateProduct,
 } from "../controllers/productController.js";
 import verifyToken from "../middlewares/varifyToken.js";
+import isAdmin from "../middlewares/isAdmin.js";
 
 const productRouter = Router();
 
-productRouter.post("/create-product", verifyToken, createProduct);
+productRouter.post("/create-product", verifyToken, isAdmin, createProduct);
 productRouter.get("/", getAllProducts);
 productRouter.get("/:id", getProductById);
-productRouter.put("/:id", (req, res) => {
-  // Logic to update a product by ID
-  const { id } = req.params;
-  res.status(200).json({ message: `Product ${id} updated successfully` });
-});
-productRouter.delete("/products/:id", (req, res) => {
-  // Logic to delete a product by ID
-  const { id } = req.params;
-  res.status(200).json({ message: `Product ${id} deleted successfully` });
-});
+productRouter.put("/:id", verifyToken, isAdmin, updateProduct);
+productRouter.delete("/:id", verifyToken, isAdmin, deleteProduct);
+productRouter.get("/related/:id", getRelatedProducts);
 
 export default productRouter;
