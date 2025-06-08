@@ -14,7 +14,7 @@ const verifyToken = (req, res, next) => {
       return res.status(500).json({ message: "Internal Server Error" });
     }
     const decoded = jwt.verify(token, SECRET);
-    console.log("Decoded token:", decoded);
+    // console.log("Decoded token:", decoded);
     req.user = decoded;
     next();
   } catch (error) {

@@ -5,7 +5,7 @@ import ShopFiltering from "./ShopFiltering";
 
 const filters = {
   categories: ["all", "accessories", "dress", "jewellery", "cosmetics"],
-  colors: ["all", "black", "red", "gold", "blue", "silver", "beige", "green"],
+  color: ["all", "black", "red", "gold", "blue", "silver", "beige", "green"],
   priceRanges: [
     { label: "Under $50", min: 0, max: 50 },
     { label: "$50 - $100", min: 50, max: 100 },
@@ -18,12 +18,12 @@ function ShopPage() {
   
   const [filterState, setFilterState] = useState({
     category: "all",
-    colors: "all",
+    color: "all",
     priceRange: " ",
   });
 
   const clearFilters = () =>
-    setFilterState({ category: "all", colors: "all", priceRange: " " });
+    setFilterState({ category: "all", color: "all", priceRange: " " });
 
   const filteredProducts = useMemo(() => {
     let result = [...productsData];
@@ -35,9 +35,9 @@ function ShopPage() {
       );
     }
 
-    if (filterState.colors !== "all") {
+    if (filterState.color !== "all") {
       result = result.filter((product) =>
-        product.color.includes(filterState.colors.toLowerCase())
+        product.color.includes(filterState.color.toLowerCase())
       );
     }
 
@@ -77,7 +77,7 @@ function ShopPage() {
               Products Available: {filteredProducts.length}
             </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Showing: {filterState.category}, {filterState.colors},{" "}
+              Showing: {filterState.category}, {filterState.color},{" "}
               {filterState.priceRange || "Any Price"}
             </p>
             <ProductCards products={filteredProducts} hasSidebar={true} />

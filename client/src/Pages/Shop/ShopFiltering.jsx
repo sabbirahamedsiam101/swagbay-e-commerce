@@ -36,15 +36,15 @@ function ShopFiltering({
       {/* Color Filter */}
       <div>
         <h4 className="font-medium text-lg mb-2">Color</h4>
-        {filters.colors.map((color) => (
+        {filters.color.map((color) => (
           <label key={color} className="capitalize block pt-2 cursor-pointer">
             <input
               type="radio"
-              name="colors"
+              name="color"
               value={color}
-              checked={filtersState.colors === color}
+              checked={filtersState.color === color}
               onChange={(e) =>
-                setFiltersState({ ...filtersState, colors: e.target.value })
+                setFiltersState({ ...filtersState, color: e.target.value })
               }
               className="mr-2"
             />
