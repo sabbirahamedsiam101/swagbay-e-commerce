@@ -128,13 +128,44 @@ export const getProductById = async (req, res) => {
     if (!product) {
       return res.status(404).json({ message: "Product not found" });
     }
+    // Calculate average rating
+
+    const reviews = await Review.find({ productId: product._id }).populate(
+      "author",
+      "name email"
+    );
+
     res.status(200).json({
       success: true,
       message: "Product retrieved successfully",
       data: product,
+      reviews,
     });
   } catch (error) {
     console.error("Error retrieving product:", error.message);
     res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+// update product
+export const updateProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { ...req.body },
+      { new: true }
+    );
+
+    if (!updatedProduct) {
+      return res.status(404).send({ message: "Product not found" });
+    }
+    res.status(200).send({
+      message: "Product updated successfully",
+      product: updatedProduct,
+    });
+  } catch (error) {
+    console.error("Error updating the product", error);
+    res.status(500).send({ message: "Failed to update the product" });
   }
 };
