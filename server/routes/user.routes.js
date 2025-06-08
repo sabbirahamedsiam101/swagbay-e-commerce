@@ -9,24 +9,24 @@ import {
   updateUser,
   updateUserRole,
 } from "../controllers/userController.js";
+import verifyToken from "../middlewares/varifyToken.js";
+
 
 const userRouter = Router();
 
-userRouter.get("/users", getAllUsers);
-
-userRouter.get("/users/:id", getUserById);
-
+// ✅ Public Routes
 userRouter.post("/register", createUser);
-
 userRouter.post("/login", loginUser);
 
-userRouter.post("/logout", logoutUser);
+// ✅ Protected Routes
+userRouter.post("/logout", verifyToken, logoutUser);
 
-// update user role
-userRouter.put("/users/:id", updateUserRole);
-// update user details
-userRouter.patch("/users/:id", updateUser);
+userRouter.get("/users", verifyToken, getAllUsers);
+userRouter.get("/users/:id", verifyToken, getUserById);
 
-userRouter.delete("/users/edit/:id", deleteUser);
+userRouter.put("/users/:id", verifyToken, updateUserRole);  // Updating role requires login
+userRouter.patch("/users/:id", verifyToken, updateUser);    // Update user info
+
+userRouter.delete("/users/edit/:id", verifyToken, deleteUser); // Delete user
 
 export default userRouter;

@@ -1,7 +1,4 @@
-
 import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET;
 
 const verifyToken = (req, res, next) => {
   try {
@@ -11,10 +8,14 @@ const verifyToken = (req, res, next) => {
     if (!token) {
       return res.status(401).json({ message: "No token provided" });
     }
-
-    const decoded = jwt.verify(token, JWT_SECRET);
-
-    req.user = decoded; // attach user to req
+    const SECRET = process.env.JWT_SECRET;
+    if (!SECRET) {
+      console.error("JWT_SECRET is missing");
+      return res.status(500).json({ message: "Internal Server Error" });
+    }
+    const decoded = jwt.verify(token, SECRET);
+    console.log("Decoded token:", decoded);
+    req.user = decoded;
     next();
   } catch (error) {
     console.error("Token verification failed:", error.message);

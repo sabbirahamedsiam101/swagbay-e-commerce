@@ -1,24 +1,38 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { LuSearch } from "react-icons/lu";
 import { GrShop } from "react-icons/gr";
 import { RiUserLine } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import CartModal from "../Pages/shop/CartModal";
 import profileAvetar from "../assets/avatar.png";
+import { useLogoutMutation } from "../redux/features/auth/authApi";
+import { logoutUser } from "../redux/features/auth/authSlice";
 function Navbar() {
   const products = useSelector((state) => state.cart.products);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Dropdown state
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleDropdownToggle = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
-  const dispatch = useDispatch();
+  const handleLogout = async () => {
+    try {
+      const res = await logout().unwrap();
+      console.log(res);
+      dispatch(logoutUser());
+      navigate("/login");
+      setIsDropdownOpen(false);
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
   const { user } = useSelector((state) => state.auth);
-  // console.log(user);
   const hanldeCartToggle = () => {
-    // console.log(isCartOpen);
     setIsCartOpen(!isCartOpen);
   };
 
@@ -85,11 +99,39 @@ function Navbar() {
           </span>
           <span>
             {user ? (
-              <img
-                src={profileAvetar}
-                alt=""
-                className="w-8 h-8 rounded-full"
-              />
+              <>
+                <img
+                  src={profileAvetar}
+                  onClick={handleDropdownToggle}
+                  alt=""
+                  className="w-8 h-8 rounded-full"
+                />
+                {isDropdownOpen ? (
+                  <div className="absolute right-0 top-12 px-6 py-4 bg-white border-gray-200 shadow-lg rounded-lg z-10">
+                    <ul className=" space-y-2 p-2">
+                      {dropdownMenus.map((menu, index) => (
+                        <li key={index} className="">
+                          <Link
+                            className="text-lg !text-lg"
+                            to={menu?.path}
+                            onClick={() => setIsDropdownOpen(false)}
+                          >
+                            {menu.label}
+                          </Link>
+                        </li>
+                      ))}
+                      <li className="dropdown__menu">
+                        <button
+                          className="text-lg !text-lg"
+                          onClick={handleLogout}
+                        >
+                          Logout
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                ) : null}
+              </>
             ) : (
               <Link to="/login">
                 <RiUserLine />

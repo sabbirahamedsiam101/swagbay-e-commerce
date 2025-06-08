@@ -1,5 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+// --- Helper: Check if token cookie exists ---
+const checkCookieToken = () => {
+  if (typeof document === "undefined") return false;
+  return document.cookie.split(";").some((c) => c.trim().startsWith("token="));
+};
+
 const loadUserFromLocalStorage = () => {
   try {
     const user = localStorage.getItem("user");
@@ -18,11 +24,19 @@ const authSlice = createSlice({
       state.user = action.payload.user;
       localStorage.setItem("user", JSON.stringify(state.user));
     },
-    logout: (state) => {
+    logoutUser: (state) => {
       state.user = null;
       localStorage.removeItem("user");
     },
+    checkTokenFromCookie: (state) => {
+      const hasToken = checkCookieToken();
+      if (!hasToken) {
+        state.user = null;
+        state.isAuthenticated = false;
+        localStorage.removeItem("user");
+      }
+    },
   },
 });
-export const { setUser, logout } = authSlice.actions;
+export const { setUser, logoutUser, checkTokenFromCookie } = authSlice.actions;
 export default authSlice.reducer;
