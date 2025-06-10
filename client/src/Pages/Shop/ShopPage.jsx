@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ProductCards from "./ProductCards";
 import ShopFiltering from "./ShopFiltering";
 import { useFetchAllProductsQuery } from "../../redux/features/products/prodcutsApi";
+import Loading from "../../Components/Loading";
 
 const filters = {
   categories: ["all", "accessories", "dress", "jewellery", "cosmetics"],
@@ -43,7 +44,7 @@ function ShopPage() {
   const clearFilters = () =>
     setFilterState({ category: "all", color: "all", priceRange: "" });
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <Loading />;
   if (error) return <p>Error loading products: {error.message}</p>;
   console.log("Products fetched:", products);
   console.log("Filter state:", filterState);
