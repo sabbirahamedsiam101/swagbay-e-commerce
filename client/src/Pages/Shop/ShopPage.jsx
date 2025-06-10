@@ -3,6 +3,7 @@ import ProductCards from "./ProductCards";
 import ShopFiltering from "./ShopFiltering";
 import { useFetchAllProductsQuery } from "../../redux/features/products/prodcutsApi";
 import Loading from "../../Components/Loading";
+import Pagination from "../../Components/Pagination";
 
 const filters = {
   categories: ["all", "accessories", "dress", "jewellery", "cosmetics"],
@@ -23,13 +24,13 @@ function ShopPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(10);
+  const [productsPerPage, setProductsPerPage] = useState(4);
 
   const { category, color, priceRange } = filterState;
   const [minPrice, maxPrice] = priceRange.split("-").map(Number);
 
   const {
-    data: { data:products = [], totalPages, totalProducts } = {},
+    data: { data: products = [], totalPages, totalProducts } = {},
     isLoading,
     error,
   } = useFetchAllProductsQuery({
@@ -74,12 +75,20 @@ function ShopPage() {
               Products Available: {products.length}
             </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Showing: {category}, {color},{" "}
-              {priceRange || "Any Price"}
+              Showing: {category}, {color}, {priceRange || "Any Price"}
             </p>
             <ProductCards products={products} hasSidebar={true} />
           </div>
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={(page) => setCurrentPage(page)}
+          />
+        )}
       </section>
     </>
   );
