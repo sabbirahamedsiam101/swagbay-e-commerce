@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react";
-import productsData from "../../data/products.json";
+// import productsData from "../../data/products.json";
 import ProductCards from "./ProductCards";
 import ShopFiltering from "./ShopFiltering";
+import { useFetchAllProductsQuery } from "../../redux/features/products/prodcutsApi";
 
 const filters = {
   categories: ["all", "accessories", "dress", "jewellery", "cosmetics"],
@@ -15,21 +16,45 @@ const filters = {
 };
 
 function ShopPage() {
-  
   const [filterState, setFilterState] = useState({
     category: "all",
     color: "all",
-    priceRange: " ",
+    priceRange: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage, setProductsPerPage] = useState(10);
+  const { category, color, priceRange } = filterState;
+  const [minPrice, maxPrice] = priceRange.split("-").map(Number);
+  const {
+    data: { products = [], totalPages, totalProducts } = {},
+    isLoading,
+    error,
+  } = useFetchAllProductsQuery({
+    category: category !== "all" ? category : "",
+    color: color !== "all" ? color : "",
+    minPrice: isNaN(minPrice) ? "" : minPrice,
+    maxPrice: isNaN(maxPrice) ? "" : maxPrice,
+    page: currentPage,
+    limit: productsPerPage,
+  });
+
+  // console.log("Query Params", {
+  //   category: category !== "all" ? category : "",
+  //   color: color !== "all" ? color : "",
+  //   minPrice: isNaN(minPrice) ? "" : minPrice,
+  //   maxPrice: isNaN(maxPrice) ? "" : maxPrice,
+  //   page: currentPage,
+  //   limit: productsPerPage,
+  // });
   const clearFilters = () =>
-    setFilterState({ category: "all", color: "all", priceRange: " " });
+    setFilterState({ category: "all", color: "all", priceRange: "" });
 
   const filteredProducts = useMemo(() => {
-    let result = [...productsData];
-
+    let result = [...products];
+    console.log("Filtered Products:", result);
     if (filterState.category !== "all") {
-      result = result.filter(
+      result = result?.filter(
         (product) =>
           product.category.toLowerCase() === filterState.category.toLowerCase()
       );
@@ -41,7 +66,7 @@ function ShopPage() {
       );
     }
 
-    if (filterState.priceRange && filterState.priceRange !== " ") {
+    if (filterState.priceRange && filterState.priceRange !== "") {
       const [min, max] = filterState.priceRange.split("-").map(Number);
       result = result.filter(
         (product) => product.price >= min && product.price <= max
@@ -49,8 +74,11 @@ function ShopPage() {
     }
 
     return result;
-  }, [filterState]);
+  }, [filterState, products]);
 
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading products: {error.message}</p>;
+    console.log("Products Data:", products);
   return (
     <>
       <section className="section__container bg-primary-light">

@@ -72,8 +72,8 @@ export const getAllProducts = async (req, res) => {
     }
 
     // Filter: Color
-    if (color !== "all") {
-      filter.color = { $regex: new RegExp(color, "i") }; // case-insensitive match
+    if (color && color !== "all") {
+      filter.color = { $regex: new RegExp(color, "i") };
     }
 
     if (minPrice && maxPrice) {
@@ -98,8 +98,9 @@ export const getAllProducts = async (req, res) => {
       default:
         sortOptions.createdAt = -1;
     }
-
+    console.log("Filter options:", filter);
     const totalProducts = await Product.countDocuments(filter);
+    console.log("Total products found:", totalProducts);
     const totaPages = Math.ceil(totalProducts / limit);
 
     const products = await Product.find(filter)
@@ -115,6 +116,7 @@ export const getAllProducts = async (req, res) => {
       totalPages: totaPages,
       currentPage: parseInt(page),
     });
+    console.log("Products retrieved successfully", products);
   } catch (error) {
     console.error("Error retrieving products:", error.message);
     res.status(500).json({ message: "Internal server error" });

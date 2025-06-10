@@ -9,6 +9,7 @@ import ShopPage from "../Pages/shop/ShopPage";
 import ProducDetails from "../Pages/shop/ProducDetails/ProducDetails";
 import Login from "../Components/Login";
 import Register from "../Components/Register";
+import ErrorBoundary from "../Components/ErrorBoundary";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,7 +19,15 @@ const router = createBrowserRouter([
       { path: "/categories/:categoryName", Component: CategoryPage },
       { path: "/blogs", Component: Blogs },
       { path: "/search", Component: Search },
-      { path: "/shop", Component: ShopPage },
+      // { path: "/shop", Component: ShopPage, errorElement: ErrorBoundary },
+      {
+        path: "/shop",
+        element: (
+          <ErrorBoundary>
+            <ShopPage />
+          </ErrorBoundary>
+        ),
+      },
       { path: "/shop/:id", Component: ProducDetails },
     ],
   },
