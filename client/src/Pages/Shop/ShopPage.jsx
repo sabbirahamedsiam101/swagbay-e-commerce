@@ -1,5 +1,4 @@
-import React, { useState, useMemo } from "react";
-// import productsData from "../../data/products.json";
+import React, { useState } from "react";
 import ProductCards from "./ProductCards";
 import ShopFiltering from "./ShopFiltering";
 import { useFetchAllProductsQuery } from "../../redux/features/products/prodcutsApi";
@@ -24,10 +23,12 @@ function ShopPage() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
+
   const { category, color, priceRange } = filterState;
   const [minPrice, maxPrice] = priceRange.split("-").map(Number);
+
   const {
-    data: { products = [], totalPages, totalProducts } = {},
+    data: { data:products = [], totalPages, totalProducts } = {},
     isLoading,
     error,
   } = useFetchAllProductsQuery({
@@ -39,46 +40,13 @@ function ShopPage() {
     limit: productsPerPage,
   });
 
-  // console.log("Query Params", {
-  //   category: category !== "all" ? category : "",
-  //   color: color !== "all" ? color : "",
-  //   minPrice: isNaN(minPrice) ? "" : minPrice,
-  //   maxPrice: isNaN(maxPrice) ? "" : maxPrice,
-  //   page: currentPage,
-  //   limit: productsPerPage,
-  // });
   const clearFilters = () =>
     setFilterState({ category: "all", color: "all", priceRange: "" });
 
-  const filteredProducts = useMemo(() => {
-    let result = [...products];
-    console.log("Filtered Products:", result);
-    if (filterState.category !== "all") {
-      result = result?.filter(
-        (product) =>
-          product.category.toLowerCase() === filterState.category.toLowerCase()
-      );
-    }
-
-    if (filterState.color !== "all") {
-      result = result.filter((product) =>
-        product.color.includes(filterState.color.toLowerCase())
-      );
-    }
-
-    if (filterState.priceRange && filterState.priceRange !== "") {
-      const [min, max] = filterState.priceRange.split("-").map(Number);
-      result = result.filter(
-        (product) => product.price >= min && product.price <= max
-      );
-    }
-
-    return result;
-  }, [filterState, products]);
-
   if (isLoading) return <p>Loading...</p>;
   if (error) return <p>Error loading products: {error.message}</p>;
-    console.log("Products Data:", products);
+  console.log("Products fetched:", products);
+  console.log("Filter state:", filterState);
   return (
     <>
       <section className="section__container bg-primary-light">
@@ -102,13 +70,13 @@ function ShopPage() {
           {/* Product Area */}
           <div className="flex-1">
             <h3 className="text-xl font-medium mb-2">
-              Products Available: {filteredProducts.length}
+              Products Available: {products.length}
             </h3>
             <p className="text-sm text-gray-600 mb-4">
-              Showing: {filterState.category}, {filterState.color},{" "}
-              {filterState.priceRange || "Any Price"}
+              Showing: {category}, {color},{" "}
+              {priceRange || "Any Price"}
             </p>
-            <ProductCards products={filteredProducts} hasSidebar={true} />
+            <ProductCards products={products} hasSidebar={true} />
           </div>
         </div>
       </section>

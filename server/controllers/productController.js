@@ -64,64 +64,64 @@ export const getAllProducts = async (req, res) => {
       limit = 10,
       sortBy = "newest",
     } = req.query;
+
     let filter = {};
 
-    // Filter: Category
-    if (category !== "all") {
+    // Normalize and filter: Category
+    if (category && category.toLowerCase() !== "all") {
       filter.category = category.toLowerCase();
     }
 
-    // Filter: Color
-    if (color && color !== "all") {
+    // Normalize and filter: Color
+    if (color && color.toLowerCase() !== "all") {
       filter.color = { $regex: new RegExp(color, "i") };
     }
 
-    if (minPrice && maxPrice) {
-      const min = parseFloat(minPrice);
-      const max = parseFloat(maxPrice);
-      if (!isNaN(min) && !isNaN(max)) {
-        filter.price = { $gte: min, $lte: max };
-      }
+    // Filter: Price
+    const min = parseFloat(minPrice);
+    const max = parseFloat(maxPrice);
+    if (!isNaN(min) && !isNaN(max)) {
+      filter.price = { $gte: min, $lte: max };
+    } else if (!isNaN(min)) {
+      filter.price = { $gte: min };
+    } else if (!isNaN(max)) {
+      filter.price = { $lte: max };
     }
 
+    // Pagination & Sorting
     const skip = (parseInt(page) - 1) * parseInt(limit);
-    // Sorting
-    let sortOptions = {};
-    switch (sortBy) {
-      case "priceLowToHigh":
-        sortOptions.price = 1;
-        break;
-      case "priceHighToLow":
-        sortOptions.price = -1;
-        break;
-      case "newest":
-      default:
-        sortOptions.createdAt = -1;
-    }
+    const sortOptions = {
+      priceLowToHigh: { price: 1 },
+      priceHighToLow: { price: -1 },
+      newest: { createdAt: -1 },
+    }[sortBy] || { createdAt: -1 };
+
     console.log("Filter options:", filter);
+
     const totalProducts = await Product.countDocuments(filter);
-    console.log("Total products found:", totalProducts);
-    const totaPages = Math.ceil(totalProducts / limit);
+    const totalPages = Math.ceil(totalProducts / limit);
 
     const products = await Product.find(filter)
       .skip(skip)
       .limit(parseInt(limit))
       .populate("author", "name")
-      .sort({ createdAt: -1 });
+      .sort(sortOptions);
+
     res.status(200).json({
       success: true,
       message: "Products retrieved successfully",
       data: products,
       totalProducts,
-      totalPages: totaPages,
+      totalPages,
       currentPage: parseInt(page),
     });
-    console.log("Products retrieved successfully", products);
+
   } catch (error) {
     console.error("Error retrieving products:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const getProductById = async (req, res) => {
   const { id } = req.params;
