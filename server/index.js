@@ -5,7 +5,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/user.routes.js";
 import productRouter from "./routes/products.routes.js";
-
+import reviewRouter from "./routes/review.routes.js";
 
 dotenv.config();
 // swagbay-e-commerce
@@ -31,6 +31,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", userRouter);
 app.use("/api/products", productRouter);
+app.use("/api/reviews", reviewRouter);
 
 // Start server
 app.listen(PORT, async () => {
