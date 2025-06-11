@@ -133,7 +133,7 @@ export const getProductById = async (req, res) => {
     // Calculate average rating
 
     const reviews = await Review.find({ productId: product._id }).populate(
-      "author",
+      "userId",
       "name email"
     );
 

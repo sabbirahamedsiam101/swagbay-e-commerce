@@ -10,6 +10,7 @@ import Login from "../Components/Login";
 import Register from "../Components/Register";
 import ErrorBoundary from "../Components/ErrorBoundary";
 import SingleProduct from "../Pages/shop/ProducDetails/SingleProduct";
+import DashboardLayout from "../layouts/DashboardLayout";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
     path: "/register",
     Component: Register,
   },
+  {
+    path:"/dashboard",
+    Component: DashboardLayout,
+  }
 ]);
 
 export default router;
