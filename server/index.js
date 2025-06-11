@@ -4,7 +4,8 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import connectDB from "./config/db.js";
 import userRouter from "./routes/user.routes.js";
-import productRouter from "./routes/product.routes.js";
+import productRouter from "./routes/products.routes.js";
+
 
 dotenv.config();
 // swagbay-e-commerce
