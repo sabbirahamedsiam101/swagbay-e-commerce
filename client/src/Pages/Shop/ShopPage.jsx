@@ -24,7 +24,7 @@ function ShopPage() {
   });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(4);
+  const [productsPerPage, setProductsPerPage] = useState(6);
 
   const { category, color, priceRange } = filterState;
   const [minPrice, maxPrice] = priceRange.split("-").map(Number);
