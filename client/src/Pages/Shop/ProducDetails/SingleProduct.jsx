@@ -2,16 +2,21 @@ import RatingStars from "../../../Components/RatingStars";
 import { useParams } from "react-router";
 import { useFetchProductByIdQuery } from "../../../redux/features/products/prodcutsApi.js";
 import Loading from "../../../Components/Loading.jsx";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../../redux/features/cart/cartSlice";
 
 function SingleProduct() {
   const { id } = useParams();
+  const dispatch = useDispatch();
   console.log("Product ID from URL:", id);
   const { data: product = {}, isLoading } = useFetchProductByIdQuery(id);
   if (isLoading) return <Loading />;
   console.log("Fetched product data:", product);
 
-  const { category, color, image, name, description, oldPrice, price, rating } =
-    product?.data;
+  const { category, color, image, name, description, oldPrice, price, rating } = product?.data;
+    const handleAddToCart = (product) => {
+      dispatch(addToCart(product));
+    };
   return (
     <section className="section__container">
       <div className="grid md:grid-cols-2 gap-8">
@@ -78,7 +83,7 @@ function SingleProduct() {
             </div>
           </div>
 
-          <button className="bg-primary px-6 py-2 text-sm text-white rounded w-fit">
+          <button onClick={() => handleAddToCart(product?.data)} className="bg-primary px-6 py-2 text-sm text-white rounded w-fit">
             Add to Cart
           </button>
         </div>

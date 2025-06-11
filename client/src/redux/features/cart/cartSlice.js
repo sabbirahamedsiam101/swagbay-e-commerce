@@ -14,18 +14,19 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, action) => {
-      const isExist = state.products.find(
+      const existingProduct = state.products.find(
         (item) => item._id === action.payload._id
       );
-      if (!isExist) {
+
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+        toast.success("Item quantity increased in cart");
+      } else {
         state.products.push({ ...action.payload, quantity: 1 });
         toast.success("Item added to cart");
-        // console.log("Item added to cart" , action.payload);
-      } else {
-        // console.log("Item already added to cart"); 
-  
-        // toast.error("Item already added to cart");
       }
+
+      // Update all totals
       state.selectedItems = setSelectedItems(state);
       state.totalPrice = setTotalPrice(state);
       state.tax = setTax(state);
