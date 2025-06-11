@@ -6,10 +6,10 @@ import Blogs from "../Pages/blogs/Blogs";
 import CategoryPage from "../Pages/category/CategoryPage";
 import Search from "../Pages/search/Search";
 import ShopPage from "../Pages/shop/ShopPage";
-import ProducDetails from "../Pages/shop/ProducDetails/ProducDetails";
 import Login from "../Components/Login";
 import Register from "../Components/Register";
 import ErrorBoundary from "../Components/ErrorBoundary";
+import SingleProduct from "../Pages/shop/ProducDetails/SingleProduct";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -28,7 +28,7 @@ const router = createBrowserRouter([
           </ErrorBoundary>
         ),
       },
-      { path: "/shop/:id", Component: ProducDetails },
+      { path: "/shop/:id", Component: SingleProduct },
     ],
   },
   {

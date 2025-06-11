@@ -1,35 +1,17 @@
-import React, { useState, useEffect } from "react";
 import RatingStars from "../../../Components/RatingStars";
+import { useParams } from "react-router";
+import { useFetchProductByIdQuery } from "../../../redux/features/products/prodcutsApi.js";
+import Loading from "../../../Components/Loading.jsx";
 
-const defaultProduct = {
-  _id: 2,
-  name: "Evening Gown",
-  category: "dress",
-  description: "Elegant evening gown for special occasions.",
-  price: 149.99,
-  oldPrice: 199.99,
-  images: [
-    "https://images.unsplash.com/photo-1568251188392-ae32f898cb3b?q=80&w=2062&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1631097969294-c38afba59496?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1631214500115-598fc2cb8d2d?q=80&w=1925&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "https://images.unsplash.com/photo-1485527691629-8e370684924c?q=80&w=2074&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  ],
-  color: "red",
-  rating: 4.0,
-};
+function SingleProduct() {
+  const { id } = useParams();
+  console.log("Product ID from URL:", id);
+  const { data: product = {}, isLoading } = useFetchProductByIdQuery(id);
+  if (isLoading) return <Loading />;
+  console.log("Fetched product data:", product);
 
-function ProductDetailsPage() {
-  const [product, setProduct] = useState(defaultProduct);
-  const [activeImage, setActiveImage] = useState(product.images[0]);
-
-  // Simulate fetching from API
-  useEffect(() => {
-    // fetch('/api/product/2').then(res => res.json()).then(data => {
-    //   setProduct(data);
-    //   setActiveImage(data.images[0]);
-    // });
-  }, []);
-
+  const { category, color, image, name, description, oldPrice, price, rating } =
+    product?.data;
   return (
     <section className="section__container">
       <div className="grid md:grid-cols-2 gap-8">
@@ -37,13 +19,13 @@ function ProductDetailsPage() {
         <div className="w-full">
           <div className="pb-4">
             <img
-              src={activeImage}
-              alt={product.name}
+              src={image}
+              alt={name}
               className="w-full md:h-[400px] h-[300px] object-cover rounded-xl"
             />
           </div>
-          <div className="flex overflow-auto justify-center gap-4">
-            {product.images.map((img, i) => (
+          {/* <div className="flex overflow-auto justify-center gap-4">
+            
               <img
                 key={i}
                 src={img}
@@ -55,32 +37,30 @@ function ProductDetailsPage() {
                     : "border-gray-300"
                 }`}
               />
-            ))}
-          </div>
+
+          </div> */}
         </div>
 
         {/* Details Section */}
         <div className="flex flex-col justify-center gap-4">
-          <h2 className="text-3xl font-semibold ">{product.name}</h2>
+          <h2 className="text-3xl font-semibold ">{name}</h2>
 
           <div className="flex items-center gap-4">
             <span className="text-xl font-bold text-(--color-primary)">
-              ${product.price}
+              ${price}
             </span>
-            {product.oldPrice && (
-              <span className="line-through text-gray-400">
-                ${product.oldPrice}
-              </span>
+            {oldPrice && (
+              <span className="line-through text-gray-400">${oldPrice}</span>
             )}
           </div>
 
-          <p className="description__text">{product.description}</p>
+          <p className="description__text">{description}</p>
 
           <div className="flex items-center gap-2">
             <span className="text-sm font-medium text-gray-700">Color:</span>
             <span
               className="w-6 h-6 rounded-full border"
-              style={{ backgroundColor: product.color }}
+              style={{ backgroundColor: color }}
             ></span>
           </div>
 
@@ -111,4 +91,4 @@ function ProductDetailsPage() {
   );
 }
 
-export default ProductDetailsPage;
+export default SingleProduct;
