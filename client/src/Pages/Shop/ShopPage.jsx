@@ -47,8 +47,8 @@ function ShopPage() {
 
   if (isLoading) return <Loading />;
   if (error) return <p>Error loading products: {error.message}</p>;
-  console.log("Products fetched:", products);
-  console.log("Filter state:", filterState);
+  // console.log("Products fetched:", products);
+  // console.log("Filter state:", filterState);
   return (
     <>
       <section className="section__container bg-primary-light">

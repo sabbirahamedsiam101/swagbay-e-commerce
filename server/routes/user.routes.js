@@ -22,7 +22,7 @@ userRouter.post("/login", loginUser);
 userRouter.post("/logout", verifyToken, logoutUser);
 
 userRouter.get("/users", verifyToken, getAllUsers);
-userRouter.get("/users/:id", verifyToken, getUserById);
+userRouter.get("/users/:id", verifyToken, getUserById); // Get user by ID
 
 userRouter.put("/users/:id", verifyToken, updateUserRole);  // Updating role requires login
 userRouter.patch("/users/:id", verifyToken, updateUser);    // Update user info

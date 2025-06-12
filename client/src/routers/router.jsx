@@ -11,6 +11,14 @@ import Register from "../Components/Register";
 import ErrorBoundary from "../Components/ErrorBoundary";
 import SingleProduct from "../Pages/shop/ProducDetails/SingleProduct";
 import DashboardLayout from "../layouts/DashboardLayout";
+import AdminHome from "../Pages/Dashboard/Admin/AdminHome";
+import ManageProducts from "../Pages/Dashboard/Admin/ManageProducts";
+import ManageOrders from "../Pages/Dashboard/Admin/ManageOrders";
+import AddNewPost from "../Pages/Dashboard/Admin/AddNewPost";
+import DashboardHome from "../Pages/Dashboard/User/DashboardHome";
+import Profile from "../Pages/Dashboard/User/Profile";
+import Payments from "../Pages/Dashboard/User/Payments";
+import Orders from "../Pages/Dashboard/User/Orders";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -41,9 +49,22 @@ const router = createBrowserRouter([
     Component: Register,
   },
   {
-    path:"/dashboard",
+    path: "/dashboard",
     Component: DashboardLayout,
-  }
+    children: [
+        // User routes
+      { index: true, Component: DashboardHome }, // /dashboard
+      { path: "profile", Component: Profile },
+      { path: "payments", Component: Payments },
+      { path: "orders", Component: Orders },
+
+      // Admin routes
+      { path: "admin", Component: AdminHome },
+      { path: "manage-products", Component: ManageProducts },
+      { path: "manage-orders", Component: ManageOrders },
+      { path: "add-new-post", Component: AddNewPost },
+    ],
+  },
 ]);
 
 export default router;

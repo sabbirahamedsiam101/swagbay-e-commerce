@@ -29,7 +29,7 @@ const authApi = createApi({
         method: "POST",
       }),
     }),
-    getUsers: builder.query({
+    getAllUsers: builder.query({
       query: () => ({
         url: "/users",
         method: "GET",
@@ -37,6 +37,14 @@ const authApi = createApi({
       refetchOnMount: true,
       invalidatesTags: ["User"],
     }),
+    getUserById: builder.query({
+      query: (id) => ({
+        url: `/users/${id}`,
+        method: "GET",
+      }),
+      providesTags: (result, error, id) => [{ type: "User", id }],
+    }),
+
     deleteUser: builder.mutation({
       query: (id) => ({
         url: `/users/${id}`,
@@ -70,7 +78,8 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
-  useGetUsersQuery,
+  useGetAllUsersQuery,
+  useGetUserByIdQuery,
   useDeleteUserMutation,
   useUpdateUserRoleMutation,
   useUpdateProfileMutation,
