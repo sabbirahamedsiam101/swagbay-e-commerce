@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { FiEye, FiEyeOff } from "react-icons/fi";
+import { FiEye, FiEyeOff, FiArrowLeft } from "react-icons/fi";
 import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../redux/features/auth/authApi";
 import { setUser } from "../redux/features/auth/authSlice";
@@ -10,8 +10,9 @@ function Login() {
   const [message, setMessage] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useDispatch();
-  const [login, { isLoading: loginLoading, error }] = useLoginMutation();
+  const [login, { isLoading: loginLoading }] = useLoginMutation();
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
@@ -19,27 +20,36 @@ function Login() {
     const email = formData.email.value;
     const password = formData.password.value;
     const userData = { email, password };
+
     try {
       const res = await login(userData).unwrap();
-      console.log("Login success:", res);
-      const { token, user } = res;
+      const { user } = res;
       dispatch(setUser({ user }));
       toast.success("Login successful!");
       setMessage("Login successful!");
       navigate("/");
     } catch (err) {
-      console.error("Login failed:", err);
       toast.error(err?.data?.message || "Invalid credentials");
       setMessage(err?.data?.message || "Invalid credentials");
-    } 
+    }
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4 relative">
+      {/* Back Button */}
+      <button
+        onClick={() => navigate("/")}
+        className="absolute top-6 left-6 text-white hover:text-black bg-primary px-5 py-2.5 rounded flex items-center gap-2"
+      >
+        <FiArrowLeft size={20} />
+        <span className="text-sm font-medium">Back to Home</span>
+      </button>
+
       <div className="w-full max-w-md bg-white rounded-xl shadow-lg p-8 space-y-6">
         <h2 className="text-3xl font-bold text-center text-gray-800">
           Login to Your Account
         </h2>
+
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label

@@ -95,8 +95,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         `}
       >
         {/* Close button for small screens */}
-        <div className="lg:hidden flex justify-end p-4">
-          <button onClick={() => setSidebarOpen(false)} className="text-xl">
+        <div className="lg:hidden flex justify-end ">
+          <button onClick={() => setSidebarOpen(false)} className="text-xl absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition">
             ✕
           </button>
         </div>

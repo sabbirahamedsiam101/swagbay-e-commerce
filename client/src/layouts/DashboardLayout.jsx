@@ -12,7 +12,7 @@ function DashboardLayout() {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content */}
-      <div className="flex-1 bg-gray-100">
+      <div className="flex-1 w-full bg-gray-100">
         {/* Top bar */}
         <div className="py-5 w-full bg-white shadow px-4 flex items-center justify-end lg:justify-end">
           {/* Toggle Button for All Screens */}

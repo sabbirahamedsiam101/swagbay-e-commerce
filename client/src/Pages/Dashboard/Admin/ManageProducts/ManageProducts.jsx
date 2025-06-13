@@ -5,7 +5,16 @@ import Pagination from "../../../../Components/Pagination";
 import Loading from "../../../../Components/Loading";
 
 const categories = ["all", "accessories", "dress", "jewellery", "cosmetics"];
-const colors = ["all", "black", "red", "gold", "blue", "silver", "beige", "green"];
+const colors = [
+  "all",
+  "black",
+  "red",
+  "gold",
+  "blue",
+  "silver",
+  "beige",
+  "green",
+];
 
 const ManageProducts = () => {
   const [filters, setFilters] = useState({
@@ -56,7 +65,7 @@ const ManageProducts = () => {
   return (
     <section className="p-4 bg-white rounded shadow">
       {/* Filter Panel */}
-      <div className="mb-6 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+      {/* <div className="mb-6 flex flex-col flex-wrap gap-4 md:flex-row md:items-center md:justify-between">
         <input
           type="text"
           name="search"
@@ -91,11 +100,64 @@ const ManageProducts = () => {
             ))}
           </select>
         </div>
-      </div>
+      </div> */}
 
+      <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="col-span-1 sm:col-span-2 md:col-span-1">
+          <input
+            type="text"
+            name="search"
+            value={search}
+            onChange={handleFilterChange}
+            placeholder="🔍 Search product..."
+            className="w-full border px-4 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+        </div>
+
+        <div className="col-span-1 sm:col-span-1 md:col-span-1">
+          <select
+            name="category"
+            value={category}
+            onChange={handleFilterChange}
+            className="w-full border px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-span-1 sm:col-span-1 md:col-span-1">
+          <select
+            name="color"
+            value={color}
+            onChange={handleFilterChange}
+            className="w-full border px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            {colors.map((c) => (
+              <option key={c} value={c}>
+                {c.charAt(0).toUpperCase() + c.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="col-span-1 sm:col-span-2 md:col-span-1 flex items-center justify-end">
+          <button
+            onClick={() =>
+              setFilters({ category: "all", color: "all", search: "" })
+            }
+            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-sm rounded-md text-gray-800"
+          >
+            Reset Filters
+          </button>
+        </div>
+      </div>
       {/* Table */}
-      <div className=" relative">
-       <table className="w-full min-w-[1000px] overflow-x-auto table-auto border-collapse">
+      <div className="w-full overflow-x-auto">
+        <table className="w-full table-auto border-collapse">
           <thead className="bg-primary text-white">
             <tr>
               <th className="px-4 py-2 text-left">#</th>
@@ -123,7 +185,7 @@ const ManageProducts = () => {
                     <img
                       src={product.image}
                       alt={product.name}
-                      className="max-w-16 h-12 object-cover rounded border"
+                      className="max-w-16 h-12 object-cover rounded shadow-lg"
                     />
                   </td>
                   <td className="px-4 py-3">{product.name}</td>
