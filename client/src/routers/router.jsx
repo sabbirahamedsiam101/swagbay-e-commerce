@@ -12,7 +12,7 @@ import ErrorBoundary from "../Components/ErrorBoundary";
 import SingleProduct from "../Pages/shop/ProducDetails/SingleProduct";
 import DashboardLayout from "../layouts/DashboardLayout";
 import AdminHome from "../Pages/Dashboard/Admin/AdminHome";
-import ManageProducts from "../Pages/Dashboard/Admin/ManageProducts";
+import ManageProducts from "../Pages/Dashboard/Admin/ManageProducts/ManageProducts";
 import ManageOrders from "../Pages/Dashboard/Admin/ManageOrders";
 import AddNewPost from "../Pages/Dashboard/Admin/AddNewPost";
 import DashboardHome from "../Pages/Dashboard/User/DashboardHome";
@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     Component: DashboardLayout,
     children: [
         // User routes
-      { index: true, Component: DashboardHome }, // /dashboard
+      { index: true, Component: DashboardHome }, 
       { path: "profile", Component: Profile },
       { path: "payments", Component: Payments },
       { path: "orders", Component: Orders },
