@@ -19,6 +19,8 @@ import DashboardHome from "../Pages/Dashboard/User/DashboardHome";
 import Profile from "../Pages/Dashboard/User/Profile";
 import Payments from "../Pages/Dashboard/User/Payments";
 import Orders from "../Pages/Dashboard/User/Orders";
+import PrivateRoute from "./PrivateRoute";
+import AdminRoute from "./AdminRoute";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -52,17 +54,73 @@ const router = createBrowserRouter([
     path: "/dashboard",
     Component: DashboardLayout,
     children: [
-        // User routes
-      { index: true, Component: DashboardHome }, 
-      { path: "profile", Component: Profile },
-      { path: "payments", Component: Payments },
-      { path: "orders", Component: Orders },
+      // ✅ Protected route for all logged-in users
+      {
+        index: true,
+        element: (
+          <PrivateRoute>
+            <DashboardHome />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "profile",
+        element: (
+          <PrivateRoute>
+            <Profile />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "payments",
+        element: (
+          <PrivateRoute>
+            <Payments />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "orders",
+        element: (
+          <PrivateRoute>
+            <Orders />
+          </PrivateRoute>
+        ),
+      },
 
-      // Admin routes
-      { path: "admin", Component: AdminHome },
-      { path: "manage-products", Component: ManageProducts },
-      { path: "manage-orders", Component: ManageOrders },
-      { path: "add-new-post", Component: AddNewPost },
+      // 👑 Admin-only routes
+      {
+        path: "admin",
+        element: (
+          <AdminRoute>
+            <AdminHome />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-products",
+        element: (
+          <AdminRoute>
+            <ManageProducts />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-orders",
+        element: (
+          <AdminRoute>
+            <ManageOrders />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "add-new-post",
+        element: (
+          <AdminRoute>
+            <AddNewPost />
+          </AdminRoute>
+        ),
+      },
     ],
   },
 ]);
