@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router";
+import { Link, NavLink, useNavigate } from "react-router";
 import { useState } from "react";
 import { FaAngleDown, FaAngleUp } from "react-icons/fa";
 import {
@@ -11,6 +11,9 @@ import {
   FaShoppingBag,
 } from "react-icons/fa";
 import useUserRole from "../../hooks/useUserRole";
+import { useLogoutMutation } from "../../redux/features/auth/authApi";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/features/auth/authSlice";
 
 const userLinks = [
   {
@@ -52,6 +55,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const [showUser, setShowUser] = useState(true);
   const [showAdmin, setShowAdmin] = useState(true);
   const { isAdmin, role } = useUserRole();
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const res = await logout().unwrap();
+      console.log(res);
+      dispatch(logoutUser());
+      navigate("/login");
+      setIsDropdownOpen(false);
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
 
   const linkClass =
     "flex items-center gap-2 px-4 py-2 rounded-lg mb-2 transition-all duration-200 hover:bg-primary/10 hover:text-primary";
@@ -145,12 +163,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
         {/* Logout link (optional) */}
         <div className="px-4 mt-4 ">
-          <NavLink
-            to="/logout"
+          <button
+            onClick={handleLogout}
             className="block px-4 py-2 rounded text-sm text-gray-500 hover:text-red-600 hover:bg-red-50 transition"
           >
             Logout
-          </NavLink>
+          </button>
         </div>
       </aside>
     </>
