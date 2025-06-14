@@ -25,7 +25,7 @@ const ManageProducts = () => {
   });
  const navigate = useNavigate();
   const [page, setPage] = useState(1);
-  const limit = 5;
+  const limit = 10;
 
   const { category, color, search } = filters;
 
