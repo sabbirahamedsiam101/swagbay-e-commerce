@@ -21,6 +21,7 @@ import Payments from "../Pages/Dashboard/User/Payments";
 import Orders from "../Pages/Dashboard/User/Orders";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
+import UpdateProdcut from "../Pages/Dashboard/Admin/ManageProducts/UpdateProduct";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -102,6 +103,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <ManageProducts />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-products/update-product/:id",
+        element: (
+          <AdminRoute>
+            <UpdateProdcut />
           </AdminRoute>
         ),
       },

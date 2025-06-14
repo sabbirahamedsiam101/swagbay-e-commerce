@@ -3,7 +3,8 @@ import { useFetchAllProductsQuery } from "../../../../redux/features/products/pr
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Pagination from "../../../../Components/Pagination";
 import Loading from "../../../../Components/Loading";
-
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 const categories = ["all", "accessories", "dress", "jewellery", "cosmetics"];
 const colors = [
   "all",
@@ -22,7 +23,7 @@ const ManageProducts = () => {
     color: "all",
     search: "",
   });
-
+ const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const limit = 5;
 
@@ -51,6 +52,19 @@ const ManageProducts = () => {
 
   const handleEdit = (id) => {
     console.log("Edit product ID:", id);
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        navigate(`/dashboard/manage-products/update-product/${id}`);
+      }
+    });
   };
 
   const handleDelete = (id) => {
@@ -65,43 +79,6 @@ const ManageProducts = () => {
   return (
     <section className="p-4 bg-white rounded shadow">
       {/* Filter Panel */}
-      {/* <div className="mb-6 flex flex-col flex-wrap gap-4 md:flex-row md:items-center md:justify-between">
-        <input
-          type="text"
-          name="search"
-          value={search}
-          onChange={handleFilterChange}
-          placeholder="Search by product name..."
-          className="border px-4 py-2 rounded w-full md:w-1/3 focus:outline-primary"
-        />
-        <div className="flex flex-col gap-3 w-full md:flex-row md:gap-4 md:w-2/3">
-          <select
-            name="category"
-            value={category}
-            onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full md:w-1/2 focus:outline-primary"
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-          <select
-            name="color"
-            value={color}
-            onChange={handleFilterChange}
-            className="border px-3 py-2 rounded w-full md:w-1/2 focus:outline-primary"
-          >
-            {colors.map((c) => (
-              <option key={c} value={c}>
-                {c}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div> */}
-
       <div className="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         <div className="col-span-1 sm:col-span-2 md:col-span-1">
           <input
