@@ -1,19 +1,27 @@
 import React, { useState, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+
 import ProductCards from "./ProductCards";
+import { useFetchAllProductsQuery } from "../../redux/features/products/prodcutsApi";
 
 function TrendingProducts() {
   const [visibleCount, setVisibleCount] = useState(8);
 
-  const { data: products = [], isLoading, isError, error } = useQuery({
-    queryKey: ["products"],
-    queryFn: async () => {
-      const data = await import("../../data/products.json");
-      return data.default;
-    },
-    staleTime: 1000 * 60 * 5, // optional: cache for 5 mins
+  // Fetch featured products only
+  const {
+     data: { products = [], totalPages, totalProducts } = {},
+    isLoading,
+    isError,
+    error,
+  } = useFetchAllProductsQuery({
+    isFeatured: true,
+    limit: 100, 
+    sortBy: "newest",
+    category: "all",
+    color: "all",
   });
+  console.log("Products:", products);
 
+  // Slice products to show limited amount with Load More
   const visibleProducts = useMemo(() => {
     return products.slice(0, visibleCount);
   }, [products, visibleCount]);
@@ -40,7 +48,7 @@ function TrendingProducts() {
       )}
 
       {/* Error */}
-      {isError && <div className="text-red-500">Error: {error.message}</div>}
+      {isError && <div className="text-red-500">Error: {error?.data?.message || "Something went wrong"}</div>}
 
       {/* Product Cards */}
       {!isLoading && !isError && (

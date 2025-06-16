@@ -19,6 +19,7 @@ const productsApi = createApi({
           page = 1,
           limit = 10,
           sortBy = "newest",
+          isFeatured = false,
         } = params;
 
         const queryParams = new URLSearchParams();
@@ -33,6 +34,7 @@ const productsApi = createApi({
         queryParams.set("page", page);
         queryParams.set("limit", limit);
         queryParams.set("sortBy", sortBy);
+        queryParams.set("isFeatured", isFeatured);
         console.log("Query values:", { category, color, minPrice, maxPrice });
 
         return `/?${queryParams.toString()}`;

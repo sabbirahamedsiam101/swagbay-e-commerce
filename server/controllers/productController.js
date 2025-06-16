@@ -63,21 +63,23 @@ export const getAllProducts = async (req, res) => {
       page = 1,
       limit = 10,
       sortBy = "newest",
+      isFeatured, 
     } = req.query;
+
 
     let filter = {};
 
-    // Normalize and filter: Category
+    // Category Filter
     if (category && category.toLowerCase() !== "all") {
       filter.category = category.toLowerCase();
     }
 
-    // Normalize and filter: Color
+    // Color Filter
     if (color && color.toLowerCase() !== "all") {
       filter.color = { $regex: new RegExp(color, "i") };
     }
 
-    // Filter: Price
+    // Price Filter
     const min = parseFloat(minPrice);
     const max = parseFloat(maxPrice);
     if (!isNaN(min) && !isNaN(max)) {
@@ -88,7 +90,11 @@ export const getAllProducts = async (req, res) => {
       filter.price = { $lte: max };
     }
 
-    // Pagination & Sorting
+    // ✅ isFeatured Filter (only if provided)
+    if (isFeatured === "true") {
+      filter.isFeatured = true;
+    } 
+
     const skip = (parseInt(page) - 1) * parseInt(limit);
     const sortOptions = {
       priceLowToHigh: { price: 1 },
@@ -120,6 +126,7 @@ export const getAllProducts = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
 
 export const getProductById = async (req, res) => {
   const { id } = req.params;
