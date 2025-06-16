@@ -30,7 +30,7 @@ function ShopPage() {
   const [minPrice, maxPrice] = priceRange.split("-").map(Number);
 
   const {
-    data: { data: products = [], totalPages, totalProducts } = {},
+    data: { products = [], totalPages, totalProducts } = {},
     isLoading,
     error,
   } = useFetchAllProductsQuery({

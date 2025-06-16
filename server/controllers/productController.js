@@ -110,18 +110,16 @@ export const getAllProducts = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Products retrieved successfully",
-      data: products,
+      products,
       totalProducts,
       totalPages,
       currentPage: parseInt(page),
     });
-
   } catch (error) {
     console.error("Error retrieving products:", error.message);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const getProductById = async (req, res) => {
   const { id } = req.params;
