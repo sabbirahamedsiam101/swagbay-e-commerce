@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { useFetchAllProductsQuery } from "../../../../redux/features/products/prodcutsApi";
+import {
+  useDeleteProductMutation,
+  useFetchAllProductsQuery,
+} from "../../../../redux/features/products/prodcutsApi";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import Pagination from "../../../../Components/Pagination";
 import Loading from "../../../../Components/Loading";
@@ -29,6 +32,7 @@ const ManageProducts = () => {
     isCategoryLoading,
     error: categoriesError,
   } = useCategories();
+  const [deleteProduct] = useDeleteProductMutation();
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const limit = 10;
@@ -65,7 +69,7 @@ const ManageProducts = () => {
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes, Update it!",
     }).then((result) => {
       if (result.isConfirmed) {
         navigate(`/dashboard/manage-products/update-product/${id}`);
@@ -74,9 +78,25 @@ const ManageProducts = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm("Are you sure you want to delete this product?")) {
-      console.log("Delete product ID:", id);
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        try {
+          await deleteProduct(id).unwrap();
+          Swal.fire("Deleted!", "The product has been deleted.", "success");
+        } catch (error) {
+          Swal.fire("Failed!", "Something went wrong while deleting.", "error");
+          console.error("Delete error:", error);
+        }
+      }
+    });
   };
 
   if (isLoading) return <Loading />;
