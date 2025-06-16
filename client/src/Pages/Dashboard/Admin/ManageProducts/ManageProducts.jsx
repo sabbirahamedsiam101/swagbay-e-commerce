@@ -5,7 +5,8 @@ import Pagination from "../../../../Components/Pagination";
 import Loading from "../../../../Components/Loading";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router";
-const categories = ["all", "accessories", "dress", "jewellery", "cosmetics"];
+import { useCategories } from "../../../../hooks/useCategories";
+// const categories = ["all", "accessories", "dress", "jewellery", "cosmetics"];
 const colors = [
   "all",
   "black",
@@ -23,14 +24,19 @@ const ManageProducts = () => {
     color: "all",
     search: "",
   });
- const navigate = useNavigate();
+  const {
+    categories,
+    isCategoryLoading,
+    error: categoriesError,
+  } = useCategories();
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const limit = 10;
 
   const { category, color, search } = filters;
 
   const {
-    data: { data: products = [], totalPages = 1 } = {},
+    data: { products = [], totalPages = 1 } = {},
     isLoading,
     isError,
     error,
@@ -75,7 +81,7 @@ const ManageProducts = () => {
 
   if (isLoading) return <Loading />;
   if (isError) return <p className="text-red-500">Error: {error.message}</p>;
-
+  console.log("categories", categories);
   return (
     <section className="p-4 bg-white rounded shadow">
       {/* Filter Panel */}
@@ -99,8 +105,8 @@ const ManageProducts = () => {
             className="w-full border px-3 py-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary"
           >
             {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              <option key={cat._id} value={cat.slug}>
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
               </option>
             ))}
           </select>

@@ -14,7 +14,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import AdminHome from "../Pages/Dashboard/Admin/AdminHome";
 import ManageProducts from "../Pages/Dashboard/Admin/ManageProducts/ManageProducts";
 import ManageOrders from "../Pages/Dashboard/Admin/ManageOrders";
-import AddNewPost from "../Pages/Dashboard/Admin/AddNewPost";
+import AddNewProduct from "../Pages/Dashboard/Admin/AddNewProduct";
 import DashboardHome from "../Pages/Dashboard/User/DashboardHome";
 import Profile from "../Pages/Dashboard/User/Profile";
 import Payments from "../Pages/Dashboard/User/Payments";
@@ -123,10 +123,10 @@ const router = createBrowserRouter([
         ),
       },
       {
-        path: "add-new-post",
+        path: "add-new-product",
         element: (
           <AdminRoute>
-            <AddNewPost />
+            <AddNewProduct />
           </AdminRoute>
         ),
       },

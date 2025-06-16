@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose";
+
 const productSchema = new Schema(
   {
     name: {
@@ -11,13 +12,13 @@ const productSchema = new Schema(
     category: {
       type: String,
       required: [true, "Product category is required"],
-    //   enum: ["electronics", "clothing", "home", "books", "other"],
+      trim: true,
     },
     description: {
       type: String,
       required: [true, "Product description is required"],
       trim: true,
-      maxlength: 500,
+      maxlength: 1000,
     },
     price: {
       type: Number,
@@ -29,12 +30,36 @@ const productSchema = new Schema(
       min: 0,
       default: 0,
     },
+    discountType: {
+      type: String,
+      enum: ["percent", "flat", ""], // allow empty if optional
+      default: "",
+    },
+    discountValue: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+    stock: {
+      type: Number,
+      min: 0,
+      default: 0,
+    },
+    isFeatured: {
+      type: Boolean,
+      default: false,
+    },
+    tags: {
+      type: [String],
+      default: [],
+    },
     image: {
       type: String,
       trim: true,
     },
     color: {
       type: String,
+      trim: true,
     },
     rating: {
       type: Number,

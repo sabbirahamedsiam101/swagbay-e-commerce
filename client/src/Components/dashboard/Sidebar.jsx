@@ -45,9 +45,9 @@ const adminLinks = [
     path: "/dashboard/manage-orders",
   },
   {
-    label: "Add New Post",
+    label: "Add New Prodcut",
     icon: <FaPenFancy />,
-    path: "/dashboard/add-new-post",
+    path: "/dashboard/add-new-product",
   },
 ];
 
@@ -96,7 +96,10 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       >
         {/* Close button for small screens */}
         <div className="lg:hidden flex justify-end ">
-          <button onClick={() => setSidebarOpen(false)} className="text-xl absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition">
+          <button
+            onClick={() => setSidebarOpen(false)}
+            className="text-xl absolute top-4 right-4 text-gray-600 hover:text-gray-800 transition"
+          >
             ✕
           </button>
         </div>
