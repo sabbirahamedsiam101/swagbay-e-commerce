@@ -9,6 +9,7 @@ import reviewRouter from "./routes/review.routes.js";
 import categoryRouter from "./routes/category.routes.js";
 
 dotenv.config();
+// await connectDB();
 // swagbay-e-commerce
 // jKT5OmWHUkrJ0vpv
 const app = express();
