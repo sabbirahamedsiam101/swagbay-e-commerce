@@ -18,7 +18,7 @@ const PORT = process.env.PORT || 5000;
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://wagbay-e-commerce.vercel.app"],
+    origin: ["http://localhost:5173", "https://swagbay-e-commerce.vercel.app"],
     credentials: true,
   })
 );
