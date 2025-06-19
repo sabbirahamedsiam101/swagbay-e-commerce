@@ -1,4 +1,3 @@
-// src/redux/features/reviews/reviewsApi.js
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getBaseURL } from "../../../utlis/baseURL";
 
@@ -10,38 +9,66 @@ const reviewsApi = createApi({
   }),
   tagTypes: ["Review"],
   endpoints: (builder) => ({
-    // POST: Create or Update Review
+    // Get reviews by product ID
+    getReviewsByProductId: builder.query({
+      query: (productId) => `/${productId}`,
+      providesTags: ["Review"],
+    }),
+
+    // Post a review
     postReview: builder.mutation({
       query: (reviewData) => ({
         url: "/post-review",
         method: "POST",
         body: reviewData,
       }),
-      invalidatesTags: (result, error, arg) => [
-        { type: "Review", id: arg.productId },
-      ],
+      invalidatesTags: ["Review"],
     }),
 
-    // GET: All reviews of a product
-    getReviewsByProductId: builder.query({
-      query: (productId) => `/${productId}`,
-      providesTags: (result, error, productId) => [
-        { type: "Review", id: productId },
-      ],
-    }),
-
-    // GET: Total review count (site-wide)
-    getTotalReviews: builder.query({
-      query: () => "/total-reviews",
+    // ✅ Get all reviews for admin
+    getAllReviews: builder.query({
+      query: () => "/admin/all-reviews",
       providesTags: ["Review"],
+    }),
+
+    // ✅ Update review status
+    updateReviewStatus: builder.mutation({
+      query: ({ reviewId, status }) => ({
+        url: `/admin/update-status/${reviewId}`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["Review"],
+    }),
+
+    // ✅ Delete single review
+    deleteReview: builder.mutation({
+      query: (reviewId) => ({
+        url: `/admin/delete/${reviewId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Review"],
+    }),
+
+    // ✅ Bulk delete reviews
+    bulkDeleteReviews: builder.mutation({
+      query: (ids) => ({
+        url: `/admin/bulk-delete`,
+        method: "POST",
+        body: { ids }, // expects { ids: [...] }
+      }),
+      invalidatesTags: ["Review"],
     }),
   }),
 });
 
 export const {
-  usePostReviewMutation,
   useGetReviewsByProductIdQuery,
-  useGetTotalReviewsQuery,
+  usePostReviewMutation,
+  useGetAllReviewsQuery,
+  useUpdateReviewStatusMutation,
+  useDeleteReviewMutation, // ✅ This is what was missing
+  useBulkDeleteReviewsMutation,
 } = reviewsApi;
 
 export default reviewsApi;

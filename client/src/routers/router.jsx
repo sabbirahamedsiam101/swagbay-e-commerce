@@ -22,6 +22,7 @@ import Orders from "../Pages/Dashboard/User/Orders";
 import PrivateRoute from "./PrivateRoute";
 import AdminRoute from "./AdminRoute";
 import UpdateProdcut from "../Pages/Dashboard/Admin/ManageProducts/UpdateProduct";
+import ManageReviews from "../Pages/Dashboard/Admin/ManageReviews";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -127,6 +128,14 @@ const router = createBrowserRouter([
         element: (
           <AdminRoute>
             <AddNewProduct />
+          </AdminRoute>
+        ),
+      },
+      {
+        path: "manage-reviews",
+        element: (
+          <AdminRoute>
+            <ManageReviews />
           </AdminRoute>
         ),
       },

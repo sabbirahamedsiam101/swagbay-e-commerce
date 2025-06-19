@@ -15,7 +15,7 @@ const useUserRole = () => {
 //   console.log("Data from API:", data?.data);
 
   const role = data?.data?.role || null;
-//   console.log("User role from API:", role);
+  console.log("User role from API:", role);
   return {
     role,
     isAdmin: role === "admin",

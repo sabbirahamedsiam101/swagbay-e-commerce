@@ -25,10 +25,20 @@ const reviewSchema = new Schema(
       ref: "User",
       required: [true, "User ID is required"],
     },
+    status: {
+      type: String,
+      enum: ["active", "deleted", "disabled", "flagged"],
+      default: "active",
+    },
+    flaggedReason: {
+      type: String,
+      default: null,
+    },
   },
   {
     timestamps: true,
   }
 );
+
 const Review = mongoose.model("Review", reviewSchema);
 export default Review;

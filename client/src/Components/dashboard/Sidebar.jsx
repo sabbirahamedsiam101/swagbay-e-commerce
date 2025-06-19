@@ -1,6 +1,6 @@
 import { Link, NavLink, useNavigate } from "react-router";
 import { useState } from "react";
-import { FaAngleDown, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleUp, FaStar } from "react-icons/fa";
 import {
   FaTachometerAlt,
   FaBoxOpen,
@@ -49,6 +49,11 @@ const adminLinks = [
     icon: <FaPenFancy />,
     path: "/dashboard/add-new-product",
   },
+  {
+    label: "Manage Reviews",
+    icon: <FaStar />,
+    path: "/dashboard/manage-reviews",
+  }
 ];
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {

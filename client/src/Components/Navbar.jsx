@@ -42,6 +42,7 @@ function Navbar() {
     { label: "Manage Items", path: "/dashboard/manage-products" },
     { label: "All Orders", path: "/dashboard/manage-orders" },
     { label: "Add New Product", path: "/dashboard/add-new-product" },
+    { label: "Manage Reviews", path: "/dashboard/manage-reviews" },
   ];
 
   // user dropdown menus
