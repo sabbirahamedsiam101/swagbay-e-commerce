@@ -1,9 +1,9 @@
 import React from "react";
 import { IoStar } from "react-icons/io5";
 
-function RatingStars() {
+function RatingStars({rating}) {
   const stars = [];
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= rating; i++) {
     stars.push(
       <span className="text-lg" key={i}>
         <IoStar />

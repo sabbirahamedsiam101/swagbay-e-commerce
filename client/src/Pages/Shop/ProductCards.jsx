@@ -40,16 +40,30 @@ function ProductCards({ products, isLoading, hasSidebar = false }) {
                     src={product.image}
                     loading="lazy"
                     alt={product.name}
-                    className="aspect-[4/3]  w-full object-cover transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
+                    className="aspect-[4/3] w-full object-cover transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3"
                   />
+
+                  {/* Discount Badge */}
+                  {product.oldPrice && (
+                    <span className="absolute top-3 right-3 bg-green-600 text-white text-xs font-semibold px-2.5 py-1 rounded-full shadow-sm z-10 transition-all duration-300 scale-95 group-hover:scale-100">
+                      -
+                      {Math.round(
+                        ((product.oldPrice - product.price) /
+                          product.oldPrice) *
+                          100
+                      )}
+                      %
+                    </span>
+                  )}
                 </Link>
 
+                {/* Add to Cart Button */}
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleAddToCart(product);
                   }}
-                  className="absolute top-2 right-2 bg-(--color-primary) hover:bg-(--color-primary-dark) text-white p-2 rounded-lg z-10"
+                  className="absolute top-2 left-2 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white p-2 rounded-lg z-10"
                 >
                   <AiOutlineShoppingCart />
                 </button>

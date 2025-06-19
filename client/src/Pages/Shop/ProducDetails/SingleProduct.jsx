@@ -6,11 +6,13 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../../redux/features/cart/cartSlice";
 import ErrorMessage from "../../../Components/ErrorMessage.jsx";
 import colorNameToRgba from "../../../utlis/colorNameToRgba.js";
+import ProductReviews from "../../../Components/ProductReviews.jsx";
 
 function SingleProduct() {
   const { id } = useParams();
   const dispatch = useDispatch();
   // console.log("Product ID from URL:", id);
+
   const {
     data: { data: product, reviews } = {},
     isLoading,
@@ -119,9 +121,11 @@ function SingleProduct() {
           </div>
         </div>
         {/* review section */}
-        <section className="section__container bg-gray-300 text-center mt-12">
+        {/* <section className="section__container bg-gray-300 text-center mt-12">
           Review will here
-        </section>
+        </section> */}
+        {/* Review section */}
+        <ProductReviews productId={id} />
       </section>
     </>
   );

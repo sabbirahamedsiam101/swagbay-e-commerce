@@ -65,11 +65,11 @@ export const totalReviews = async (req, res) => {
 
 // get reviews by product ID
 export const getReviewsByProductId = async (req, res) => {
-
   const { productId } = req.params;
   try {
-    const reviews = await Review.find().populate('userId', 'name');
-    if (reviews.length === 0) {
+    const reviews = await Review.find({ productId }).populate("userId", "name");
+    console.log("reviews", reviews);
+    if (reviews?.length === 0 && reviews == null) {
       return res
         .status(404)
         .json({ message: "No reviews found for this product" });
