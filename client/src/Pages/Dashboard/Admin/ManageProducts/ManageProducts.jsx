@@ -27,6 +27,7 @@ const ManageProducts = () => {
     color: "all",
     search: "",
   });
+
   const {
     categories,
     isCategoryLoading,

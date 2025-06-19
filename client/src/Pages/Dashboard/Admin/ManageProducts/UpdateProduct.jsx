@@ -5,10 +5,12 @@ import {
   useUpdateProductMutation,
 } from "../../../../redux/features/products/prodcutsApi";
 import Loading from "../../../../Components/Loading";
+import { useCategories } from "../../../../hooks/useCategories";
 
 const UpdateProduct = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { categories, isCategoryLoading, error } = useCategories();
 
   const { data: { data: product = {} } = {}, isLoading } =
     useFetchProductByIdQuery(id);
@@ -60,13 +62,13 @@ const UpdateProduct = () => {
       await updateProduct({ id, ...updatedData }).unwrap();
       alert("Product updated successfully");
       navigate("/dashboard/manage-products");
-      console.log('Updated data:', updatedData);
+      console.log("Updated data:", updatedData);
     } catch (err) {
       alert("Update failed: " + err.message);
     }
   };
 
-  if (isLoading) return <Loading />;
+  if (isLoading || isCategoryLoading) return <Loading />;
 
   // console.log("Product data:", product);
   // console.log("Form data:", formData);
@@ -86,7 +88,7 @@ const UpdateProduct = () => {
         />
 
         {/* Category */}
-        <input
+        {/* <input
           type="text"
           name="category"
           placeholder="Category"
@@ -94,8 +96,28 @@ const UpdateProduct = () => {
           onChange={handleChange}
           className="border px-4 py-2 w-full rounded"
           required
-        />
+        /> */}
+        <select
+          name="category"
+          value={formData.category}
+          onChange={handleChange}
+          className="border px-4 py-2 w-full rounded"
+          required
+        >
+          <option value="">Select Category</option>
 
+          {isCategoryLoading && <option disabled>Loading categories...</option>}
+
+          {error && <option disabled>Error loading categories</option>}
+
+          {!isCategoryLoading &&
+            !error &&
+            categories.map((cat) => (
+              <option key={cat._id} value={cat.slug}>
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+              </option>
+            ))}
+        </select>
         {/* Color */}
         <input
           type="text"
